@@ -13,7 +13,7 @@ import dash_bootstrap_components as dbc
 
 import pandas as pd
 import numpy as np
-from convert_geoloc_to_rurality import convert_projection, get_rurality, get_pop_density, get_koppen, get_s3_point_data
+from convert_geoloc_to_rurality import convert_projection, get_s3_point_data
 
 # Since we're adding callbacks to elements that don't exist in the app.layout,
 # Dash will raise an exception to warn us that we might be
