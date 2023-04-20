@@ -8,6 +8,40 @@ import pyproj as proj
 import rasterio
 import os
 
+from rio_tiler.io import Reader
+
+def get_s3_point_data(df, s3_url, geo_type, coord_projection="EPSG:3857"):
+    print(s3_url)
+    with Reader(s3_url) as cog:
+        if geo_type == "rur_pop_kop":
+            rurality_values = []
+            pop_density_values = []
+            koppen_values = []
+            
+            for _, row in df.iterrows():
+                x, y = row["moll_lon"], row["moll_lat"]
+                # Read pixel values for all bands at coordinates (x, y)
+                pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1, 2, 3])
+                
+                rurality_values.append(int(pointdata.data[0]))
+                pop_density_values.append(float(pointdata.data[1]))
+                koppen_values.append(int(pointdata.data[2]))
+            
+            df["Rurality"] = rurality_values
+            df["Population Density"] = pop_density_values
+            df["Koppen"] = koppen_values
+        if geo_type == "co2":
+            co2_values = []
+            for _, row in df.iterrows():
+                x, y = row["moll_lon"], row["moll_lat"]
+                # Read pixel values for all bands at coordinates (x, y)
+                pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1])
+                co2_values.append(float(pointdata.data[0]))
+            
+            df["CO2 emissions"] = co2_values
+    
+    return df
+
 def convert_projection(df,projection):
     #wrapper function to convert EPSG:4326 latitude and longitudes to ESRI:54009 for GHS-SMOD using a pyproj transformer
     #takes as input pandas series for latitude, longitude and sample name
@@ -38,10 +72,10 @@ def latlon_from_address(df):
             #this basically seems to be an issue with Greek addresses and so could pose an issue elsewhere too. Could move to google api instead
             print("Issue with: ",each,"\nCould not find this address - check format or fill manually with Google Maps")
             lat.append("Unknown")
-            lon.append("Unknown") 
+            lon.append("Unknown")
     latlon_missing['Latitude'] = lat
     latlon_missing['Longitude'] = lon
-    #now merge the updated lat lons into the full table. 
+    #now merge the updated lat lons into the full table.
     df.update(latlon_missing)
     return df
 
@@ -75,47 +109,6 @@ def get_koppen(df,geoquery):
         df = pd.concat([df, pd.Series(values, name = "Koppen")],axis =1)
     return df
 
-# df = pd.read_csv("homes_mapping_rurality_rur_rem.csv")
-
-# df = get_koppen(df, "koppen")
-
-# print(df["Rurality"].head)
-# parser.add_argument('-a', '--api_key', metavar='', type=str,
-#                     help='API Key for accessing the Google Maps API')
-
-# 
 
 
-
-# #print(transformer.transform(-541000.000, 6500000.000))
-
-# geolocator = GoogleV3(api_key = api_key, user_agent="urbrur_application")
-
-# my_dir = os.path.expanduser("GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.tif")
-
-# dataset = rasterio.open(my_dir)
-
-# if location_info.columns.values.tolist() == ['Sample','Postcode','Address', "Latitude", "Longitude"]:
-#     #subset to only run the api call on locations that NEED lat lon, prevents repeated duplicate api calls
-#     latlon_missing = location_info.loc[location_info["Latitude"].isnull()]
-#     latlon_missing['Location'] = latlon_missing['Postcode'].astype(str).fillna('') + ',' + latlon_missing['Address'].astype(str).fillna('')
-#     lat = []
-#     lon = []
-#     for each in latlon_missing['Location']:
-#         geoloc = geolocator.geocode(each)
-#         print(geoloc)
-#         if hasattr(geoloc, "latitude"):
-#             lat.append(geoloc.latitude)
-#             lon.append(geoloc.longitude)
-#         else:
-#             #this basically seems to be an issue with Greek addresses and so could pose an issue elsewhere too. Could move to google api instead
-#             print("Issue with: ",each,"\nCould not find this address - check format or fill manually with Google Maps")
-#             lat.append("Unknown")
-#             lon.append("Unknown") 
-#     latlon_missing['Latitude'] = lat
-#     latlon_missing['Longitude'] = lon
-#     #now merge the updated lat lons into the full table. 
-#     location_info.update(latlon_missing)    
-# else:
-#     print("Unrecognised file format, please check input file columns (expected order: [Sample,Postcode,Address,Latitude,Longitude] - include latitude and longitude columns even if not known")
 

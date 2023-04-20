@@ -1,0 +1,21 @@
+html body {
+    font-family: 'Helvetica', 'Arial', sans-serif !important;
+}
+
+.navbar-brand img {
+    max-height: 125px; /* Set the maximum height of the image */
+    width: auto; /* Maintain the aspect ratio */
+}
+
+/* Resize the image according to the viewport width */
+@media (max-width: 768px) {
+    .navbar-brand img {
+        max-height: 100px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand img {
+        max-height: 50px;
+    }
+}
