@@ -119,7 +119,7 @@ def parse_data(contents, filename):
     content_type, content_string = contents.split(',')
     decoded = base64.b64decode(content_string)
     s3_bucket = 'cloudgeotiffbucket'
-    s3_key_rur_pop_kop = 'rur_pop_kop_cog.tif'
+    s3_key_rur_pop_kop = 'rur_pop_kop_multilayer_cog.tif'
     s3_key_co2 = 'co2_cog.tif'
     s3_region = 'eu-north-1'
     s3_url_rur_pop_kop = f"https://{s3_bucket}.s3.{s3_region}.amazonaws.com/{s3_key_rur_pop_kop}"
