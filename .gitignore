@@ -1,7 +1,9 @@
-
 Beck_KG_V1_present_0p0083.tif
 Beck_KG_V1_present_conf_0p0083.tif
 assets/.DS_Store
 GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.tif
 *.tif
 .DS_Store
+.ipynb_checkpoints/*
+.ipynb_checkpoints
+__pycache__/
