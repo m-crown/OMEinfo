@@ -17,17 +17,15 @@ OMEinfo is an open-source bioinformatics tool designed to automate the retrieval
 OMEinfo is provided as a Docker container, which can be easily set up in a local environment or on cloud-based platforms. To install and run OMEinfo, follow these steps:
 
 1. Install Docker on your machine following the [official installation guide](https://docs.docker.com/get-docker/).
-2. Clone this repository: `git clone https://github.com/yourusername/OMEinfo.git`
+2. Clone this repository: `git clone https://github.com/m-crown/OMEinfo.git`
 3. Navigate to the project app directory: `cd OMEinfo/OMEinfo`
-4. Build the Docker image: `docker build -t omeinfo .`
+4. Build the Docker image: `docker build -t omeinfo .` Note: you may need to prefix this command with sudo.
 5. Run the Docker container: `docker run -p 8050:8050 omeinfo`
-
-After completing these steps, the OMEInfo web application should be accessible at `http://localhost:8080`.
 
 ## Usage
 
 1. Open the OMEinfo web application in your browser at `http://0.0.0.0:8050`.
-2. Upload a CSV file containing geolocation data (latitude and longitude) using the provided interface.
+2. Upload a CSV file containing geolocation data (latitude and longitude) using the provided interface. A test addresses file is distributed with the OMEinfo repo , `OMEinfo/test_data`. `test_addresses` is a large sample metadata file, and can take some time to load. `test_addresses2.csv` is a subset of the larger set, and will load in approx 15 seconds. 
 3. The application will retrieve the geographical metadata for the uploaded locations and display the results on a map and in a histogram.
 4. You can choose to display metadata features as the color coding on the map and as the histogram's x-axis.
 5. A table with the processed data is also provided for further analysis.
