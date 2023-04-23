@@ -13,7 +13,54 @@ import dash_bootstrap_components as dbc
 
 import pandas as pd
 import numpy as np
-from convert_geoloc_to_rurality import convert_projection, get_s3_point_data
+
+import pyproj as proj
+
+from rio_tiler.io import Reader
+
+def get_s3_point_data(df, s3_url, geo_type, coord_projection="EPSG:3857"):
+    print(s3_url)
+    with Reader(s3_url) as cog:
+        if geo_type == "rur_pop_kop":
+            rurality_values = []
+            pop_density_values = []
+            koppen_values = []
+            
+            for _, row in df.iterrows():
+                x, y = row["moll_lon"], row["moll_lat"]
+                # Read pixel values for all bands at coordinates (x, y)
+                pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1, 2, 3])
+                
+                rurality_values.append(int(pointdata.data[0]))
+                pop_density_values.append(float(pointdata.data[1]))
+                koppen_values.append(int(pointdata.data[2]))
+            
+            df["Rurality"] = rurality_values
+            df["Population Density"] = pop_density_values
+            df["Koppen"] = koppen_values
+        if geo_type == "co2":
+            co2_values = []
+            for _, row in df.iterrows():
+                x, y = row["moll_lon"], row["moll_lat"]
+                # Read pixel values for all bands at coordinates (x, y)
+                pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1])
+                co2_values.append(float(pointdata.data[0]))
+            
+            df["CO2 emissions"] = co2_values
+    
+    return df
+
+def convert_projection(df,projection):
+    #wrapper function to convert EPSG:4326 latitude and longitudes to ESRI:54009 for GHS-SMOD using a pyproj transformer
+    #takes as input pandas series for latitude, longitude and sample name
+    if projection == "mollweide":
+        df["Latitude"].loc[df["Latitude"].isnull()] = 0
+        df["Longitude"].loc[df["Longitude"].isnull()] = 0
+        transformer = proj.Transformer.from_crs('EPSG:4326', 'ESRI:54009', always_xy=True)
+        mollweide_lon, mollweide_lat = transformer.transform(df["Longitude"].values, df["Latitude"].values)
+        df["moll_lat"] = mollweide_lat
+        df["moll_lon"] = mollweide_lon
+    return df
 
 # Since we're adding callbacks to elements that don't exist in the app.layout,
 # Dash will raise an exception to warn us that we might be
@@ -211,12 +258,12 @@ def update_bar(df, val):
     if df:
         df = pd.read_json(df)
         df['Rurality'] = df['Rurality'].astype('category')
-        if val != "Population Density":
+        if val not in ["Population Density", "CO2 emissions"]:
             fig = px.histogram(df,
                         x=df[val],
                         hover_name="Sample",
                         color = df[val])
-        if val == "Population Density":
+        else:
             fig = px.histogram(df,
                         x=df[val],
                         hover_name="Sample")
@@ -326,4 +373,4 @@ def display_page(pathname):
 
 
 if __name__ == '__main__':
-    app.run_server(host='0.0.0.0', port=8050, debug=True)
+    app.run_server(host='0.0.0.0', port=8050)
