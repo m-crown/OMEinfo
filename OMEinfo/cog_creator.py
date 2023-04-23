@@ -5,8 +5,8 @@ from botocore.exceptions import NoCredentialsError
 from rio_tiler.io import Reader
 
 s3_bucket = 'cloudgeotiffbucket'
-s3_key1 = 'rur_pop_kop_multilayer_cog.tif'
-s3_key2= 'co2_cog.tif'
+s3_key1 = 'rurpopkop_v1_cog.tif'
+s3_key2= 'co2_v1_cog.tif'
 s3_region = 'eu-north-1'
 s3_url = f"https://{s3_bucket}.s3.{s3_region}.amazonaws.com/{s3_key1}"
 

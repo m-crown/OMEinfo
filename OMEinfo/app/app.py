@@ -29,9 +29,6 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ])
 
-HOMEPAGETEXT = "Microbiome classification studies increasingly associate geographical features like rurality and climate type with microbiomes. However, microbiologists and bioinformaticians often struggle to access and integrate rich geographical metadata from sources like GeoTIFs. Inconsistent definitions of rurality, for example, can hinder cross-study comparisons. To address this, we present OMEInfo, a Python-based tool that automates the retrieval of consistent geographical metadata like Koppen climate classification, rurality, population density, and CO2 emissions from user-provided location data. OMEInfo leverages open data sources like the Global Human Settlement Layer (GHSL), Koppen climate classification models and ODIAC, to ensure metadata accuracy and provenance. OMEInfo's Dash web application enables users to visualize their data and metadata on a map and a histogram. The tool is available as a Docker container, providing a portable, lightweight solution for researchers. By offering a standardised metadata retrieval approach and incorporating FAIR and OPEN data principles, OMEInfo promotes reproducibility and cross-study comparisons in microbiome research. As the field continues to explore the relationship between microbiomes and geographical features, tools like OMEInfo will prove vital in developing a robust, accurate, and interconnected understanding of these complex interactions."
-
-
 LOGO = "assets/logo.png"
 LOGO_BASE64 = base64.b64encode(open(LOGO, 'rb').read()).decode('ascii')
 SIDEBAR_STYLE = {
@@ -45,7 +42,7 @@ logo_image = html.Img(src='data:image/png;base64,{}'.format(LOGO_BASE64), height
 brand_component = html.Div(logo_image, className='navbar-brand')
 
 navbar = dbc.NavbarSimple(
-    children = [dbc.NavLink("Analyse", href="/analyse", active="exact", style={'margin': '10px'}), dbc.NavLink("Page 2", href="/page-2", active="exact", style={'margin': '10px'})],
+    children = [dbc.NavLink("Analyse", href="/analyse", active="exact", style={'margin': '10px'})],
     brand=brand_component,
     brand_href = "/",
     className="h1",
@@ -60,17 +57,19 @@ index_page = html.Div(
         dbc.Row([
             dbc.Col([dbc.Card(
                 html.Div([
-                    html.P("Microbiome classification studies increasingly associate geographical features like rurality and climate type with microbiomes. However, microbiologists and bioinformaticians often struggle to access and integrate rich geographical metadata from sources like GeoTIFs. Inconsistent definitions of rurality, for example, can hinder cross-study comparisons."),
-                    html.P("To address this, we present OMEInfo, a Python-based tool that automates the retrieval of consistent geographical metadata like Koppen climate classification, rurality, population density, and CO2 emissions from user-provided location data."),
-                    html.P("OMEInfo leverages open data sources like the Global Human Settlement Layer (GHSL), Koppen climate classification models and ODIAC, to ensure metadata accuracy and provenance."),
-                    html.P("OMEInfo's Dash web application enables users to visualize their data and metadata on a map and a histogram. The tool is available as a Docker container, providing a portable, lightweight solution for researchers."),
-                    html.P("Key features of OMEInfo include:"),
+                    html.P("Microbiome classification studies increasingly associate geographical features like rurality and climate type with microbiomes. However, microbiologists and bioinformaticians often struggle to access and integrate rich geographical metadata from sources like GeoTIFs. Inconsistent definitions of rurality, for example, can hinder cross-study comparisons. \nTo address this, we present OMEInfo, a Python-based tool that automates the retrieval of consistent geographical metadata like Koppen climate classification, rurality, population density, and CO2 emissions from user-provided location data.\n OMEInfo leverages open data sources like the Global Human Settlement Layer (GHSL), Koppen climate classification models and ODIAC, to ensure metadata accuracy and provenance.\n OMEInfo's Dash web application enables users to visualize their data and metadata on a map and a histogram. The tool is available as a Docker container, providing a portable, lightweight solution for researchers.\n Key features of OMEInfo include:"),
                     html.Ul([
                         html.Li("Standardized metadata retrieval approach"),
                         html.Li("Incorporating FAIR and OPEN data principles"),
                         html.Li("Promoting reproducibility and cross-study comparisons in microbiome research"),
                     ]),
-                    html.P("As the field continues to explore the relationship between microbiomes and geographical features, tools like OMEInfo will prove vital in developing a robust, accurate, and interconnected understanding of these complex interactions.")
+                    html.P("As the field continues to explore the relationship between microbiomes and geographical features, tools like OMEInfo will prove vital in developing a robust, accurate, and interconnected understanding of these complex interactions.\n If you use OMEinfo to obtain geographic metadata, please cite:"),
+                    html.Ul([
+                        html.Li("Fossil Fuel CO2 data: Tomohiro Oda, Shamil Maksyutov (2015), ODIAC Fossil Fuel CO2 Emissions Dataset (Version name : ODIAC2020b), Center for Global Environmental Research, National Institute for Environmental Studies, doi:10.17595/20170411.001. (Reference date : 2023/04/20)"),
+                        html.Li("Koppen-Geiger Climate Classification: Beck, H., Zimmermann, N., McVicar, T. et al. Present and future Köppen-Geiger climate classification maps at 1-km resolution. Sci Data 5, 180214 (2018). https://doi.org/10.1038/sdata.2018.214"),
+                        html.Li("Population Density: Schiavina, Marcello; Freire, Sergio; MacManus, Kytt (2019): GHS population grid multitemporal (1975, 1990, 2000, 2015) R2019A. European Commission, Joint Research Centre (JRC) DOI: 10.2905/42E8BE89-54FF-464E-BE7B-BF9E64DA5218"),
+                        html.Li("Rurality: Pesaresi, Martino; Florczyk, Aneta; Schiavina, Marcello; Melchiorri, Michele; Maffenini, Luca (2019): GHS settlement grid, updated and refined REGIO model 2014 in application to GHS-BUILT R2018A and GHS-POP R2019A, multitemporal (1975-1990-2000-2015), R2019A. European Commission, Joint Research Centre (JRC) DOI: 10.2905/42E8BE89-54FF-464E-BE7B-BF9E64DA5218")
+                    ]),
                 ], style={'text-align': 'center'})
             )])
         ]),
@@ -114,13 +113,12 @@ page_1_layout = html.Div(
                         ],justify = "center")])]),
             dcc.Store(id="df_store")])
 
-
 def parse_data(contents, filename):
     content_type, content_string = contents.split(',')
     decoded = base64.b64decode(content_string)
     s3_bucket = 'cloudgeotiffbucket'
-    s3_key_rur_pop_kop = 'rur_pop_kop_multilayer_cog.tif'
-    s3_key_co2 = 'co2_cog.tif'
+    s3_key_rur_pop_kop = 'rurpopkop_v1_cog.tif'
+    s3_key_co2 = 'co2_v1_cog.tif'
     s3_region = 'eu-north-1'
     s3_url_rur_pop_kop = f"https://{s3_bucket}.s3.{s3_region}.amazonaws.com/{s3_key_rur_pop_kop}"
     s3_url_co2 = f"https://{s3_bucket}.s3.{s3_region}.amazonaws.com/{s3_key_co2}"
@@ -188,6 +186,8 @@ def update_map(df, val):
             comment = html.P("Rurality measured according to GHS-SMOD", className="card-text",)
         elif val == "Population Density":
             comment = html.P("Pop Dens GHS-SMOD", className="card-text",)
+        elif val == "CO2 emissions":
+            comment = html.P("ODIAC Fossil Fuel Co2 Emissions", className="card-text",)
         card_content = [
             dbc.CardHeader("Sample Location"),
             dbc.CardBody(
@@ -232,6 +232,8 @@ def update_bar(df, val):
             comment = html.P("Rurality measured according to GHS-SMOD",className="card-text",)
         elif val == "Population Density":
             comment = html.P("Pop Dens GHS",className="card-text",)
+        elif val == "CO2 emissions":
+            comment = html.P("ODIAC Fossil Fuel Co2 Emissions", className="card-text",)
         card_content = [
             dbc.CardHeader("Breakdown of metadata feature"),
             dbc.CardBody(
@@ -285,7 +287,7 @@ def populate_dropdown(df):
     if df:
         dropdown = dcc.Dropdown(
                     id='map_fill',
-                    options=[{"label": "Rurality", "value": "Rurality"}, {"label":"Koppen", "value": "Koppen"}, {"label": "Population Density", "value": "Population Density"}],
+                    options=[{"label": "Rurality", "value": "Rurality"}, {"label":"Koppen", "value": "Koppen"}, {"label": "Population Density", "value": "Population Density"}, {"label" : "CO2 Emissions", "value" : "CO2 emissions"}],
                     value='Koppen')
         return dropdown
 
