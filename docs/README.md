@@ -49,8 +49,8 @@ To ensure clear and consistent communication of version updates, a changelog wil
 
 | File Name     | File URL | Description |
 |---------------|----------|-------------|
-| CO2_v1.tif    | {URL}    | Fossil Fuel CO2 Emissions |
-| rurpopkop_v1.tif | {URL} | Rurality, Population Density, and Koppen-Geiger Climate Classification |
+| CO2_v1.tif    | s3://cloudgeotiffbucket/co2_v1_cog.tif | Fossil Fuel CO2 Emissions |
+| rurpopkop_v1.tif | s3://cloudgeotiffbucket/rurpopkop_v1_cog.tif | Rurality, Population Density, and Koppen-Geiger Climate Classification |
 
 ### Citations
 
