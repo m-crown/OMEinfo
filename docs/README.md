@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/m-crown/OMEinfo/blob/9831a26e93ad7a9e3accec5c5e8d38ce83259c0c/OMEinfo/app/assets/logo.png" alt="OMEinfo Logo" width="40%" height="auto" />
+  <img src="logo.png" alt="OMEinfo Logo" width="40%" height="auto" />
 </p>
 
 OMEinfo is an open-source bioinformatics tool designed to automate the retrieval of consistent geographical metadata for microbiome research. It provides an easy-to-use interface for researchers to obtain geographical metadata, including Koppen climate classification, degree of rurality, population density, and fossil fuel CO2 emissions from user-provided location data. The tool aims to facilitate cross-study comparisons and promote reproducibility in microbiome research by adhering to the principles of FAIR and Open data.
