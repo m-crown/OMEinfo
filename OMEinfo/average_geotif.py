@@ -78,5 +78,5 @@ array_sd[nodata_mask] = np.nan
 profile_out = profile1.copy()
 profile_out.update(dtype=array_mean.dtype.name,
                    nodata=np.nan)
-with rasterio.open('out.tif', 'w', **profile_out) as dst:
+with rasterio.open('co2.tif', 'w', **profile_out) as dst:
     dst.write(array_mean)
