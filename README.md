@@ -49,17 +49,21 @@ To ensure clear and consistent communication of version updates, a changelog wil
 
 | File Name     | File URL | Description |
 |---------------|----------|-------------|
-| CO2_v1.tif    | s3://cloudgeotiffbucket/co2_v1_cog.tif | Fossil Fuel CO2 Emissions |
-| rurpopkop_v1.tif | s3://cloudgeotiffbucket/rurpopkop_v1_cog.tif | Rurality, Population Density, and Koppen-Geiger Climate Classification |
+| co2_v1_cog.tif    | s3://cloudgeotiffbucket/co2_v1_cog.tif | Fossil Fuel CO2 Emissions |
+| rurpopkop_v1_cog.tif | s3://cloudgeotiffbucket/rurpopkop_v1_cog.tif | Rurality, Population Density, and Koppen-Geiger Climate Classification |
+| no2_v1_cog.tif | s3://cloudgeotiffbucket/no2_v1_cog.tif | Tropospheric NO2 Emissions |
+
+For details on the process for creation of the current data sources, see explanation [here](https://m-crown.github.io/OMEinfo/data_processing.md)
 
 ### Citations
 
 | Data Source | Citation | DOI |
 |-------------|----------|-----|
-| Fossil Fuel CO2 data | Tomohiro Oda, Shamil Maksyutov (2015), ODIAC Fossil Fuel CO2 Emissions Dataset (Version name : ODIAC2020b), Center for Global Environmental Research, National Institute for Environmental Studies | [10.17595/20170411.001](https://doi.org/10.17595/20170411.001) |
+| Fossil Fuel CO2 emissions data | Tomohiro Oda, Shamil Maksyutov (2015), ODIAC Fossil Fuel CO2 Emissions Dataset (Version name : ODIAC2020b), Center for Global Environmental Research, National Institute for Environmental Studies | [10.17595/20170411.001](https://doi.org/10.17595/20170411.001) |
 | Koppen-Geiger Climate Classification | Beck, H., Zimmermann, N., McVicar, T. et al. Present and future Köppen-Geiger climate classification maps at 1-km resolution. Sci Data 5, 180214 (2018) | [10.1038/sdata.2018.214](https://doi.org/10.1038/sdata.2018.214) |
 | Population Density | Schiavina, Marcello; Freire, Sergio; MacManus, Kytt (2019): GHS population grid multitemporal (1975, 1990, 2000, 2015) R2019A. European Commission, Joint Research Centre (JRC) | [10.2905/42E8BE89-54FF-464E-BE7B-BF9E64DA5218](https://doi.org/10.2905/42E8BE89-54FF-464E-BE7B-BF9E64DA5218) |
 | Rurality | Pesaresi, Martino; Florczyk, Aneta; Schiavina, Marcello; Melchiorri, Michele; Maffenini, Luca (2019): GHS settlement grid, updated and refined REGIO model 2014 in application to GHS-BUILT R2018A and GHS-POP R2019A, multitemporal (1975-1990-2000-2015), R2019A. European Commission, Joint Research Centre (JRC) | [10.2905/42E8BE89-54FF-464E-BE7B-BF9E64DA5218](https://doi.org/10.2905/42E8BE89-54FF-464E-BE7B-BF9E64DA5218) |
+| Tropospheric NO2 Emissions data | Romahn, Pedergnana, Loyola, Apituley, Sneep and Veefkind (2022): Sentinel-5 Precursor/TROPOMI Level 2 Product User Manual: Cloud Properties | [ESA Sentinel 5P](https://sentinel.esa.int/documents/247904/2474726/Sentinel-5P-Level-2-Product-User-Manual-Cloud) |
 
 Download the [current citations in BibTeX format](citations/v1_citations.bib).
 
