@@ -1,4 +1,5 @@
 FROM continuumio/miniconda3
+ENV OMEINFO_VERSION=2.0.0
 COPY conda_requirements.txt /tmp/
 COPY pip_requirements.txt /tmp/
 COPY ./app /app
