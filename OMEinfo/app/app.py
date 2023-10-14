@@ -12,65 +12,9 @@ from dash import dash_table
 import dash_bootstrap_components as dbc
 
 import pandas as pd
-import numpy as np
-
-import pyproj as proj
-
-from rio_tiler.io import Reader
-
 import requests
 
-def get_s3_point_data(df, s3_url, geo_type, coord_projection="EPSG:3857"):
-    with Reader(s3_url) as cog:
-        if geo_type == "rur_pop_kop":
-            rurality_values = []
-            pop_density_values = []
-            koppen_values = []
-            
-            for _, row in df.iterrows():
-                x, y = row["moll_lon"], row["moll_lat"]
-                # Read pixel values for all bands at coordinates (x, y)
-                pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1, 2, 3])
-                
-                rurality_values.append(int(pointdata.data[0]))
-                pop_density_values.append(float(pointdata.data[1]))
-                koppen_values.append(int(pointdata.data[2]))
-            
-            df["Rurality"] = rurality_values
-            df["Population Density"] = pop_density_values
-            df["Koppen Geiger"] = koppen_values
-        if geo_type == "co2":
-            co2_values = []
-            for _, row in df.iterrows():
-                x, y = row["moll_lon"], row["moll_lat"]
-                # Read pixel values for all bands at coordinates (x, y)
-                pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1])
-                co2_values.append(float(pointdata.data[0]))
-            
-            df["Fossil Fuel CO2 emissions"] = co2_values
-        if geo_type == "no2":
-            no2_values = []
-            for _, row in df.iterrows():
-                x, y = row["moll_lon"], row["moll_lat"]
-                # Read pixel values for all bands at coordinates (x, y)
-                pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1])
-                no2_values.append(float(pointdata.data[0]))
-            
-            df["Tropospheric Nitrogen Dioxide Emissions"] = no2_values
-    
-    return df
 
-def convert_projection(df,projection):
-    #wrapper function to convert EPSG:4326 latitude and longitudes to ESRI:54009 for GHS-SMOD using a pyproj transformer
-    #takes as input pandas series for latitude, longitude and sample name
-    if projection == "mollweide":
-        df["Latitude"].loc[df["Latitude"].isnull()] = 0
-        df["Longitude"].loc[df["Longitude"].isnull()] = 0
-        transformer = proj.Transformer.from_crs('EPSG:4326', 'ESRI:54009', always_xy=True)
-        mollweide_lon, mollweide_lat = transformer.transform(df["Longitude"].values, df["Latitude"].values)
-        df["moll_lat"] = mollweide_lat
-        df["moll_lon"] = mollweide_lon
-    return df
 
 # Since we're adding callbacks to elements that don't exist in the app.layout,
 # Dash will raise an exception to warn us that we might be
@@ -396,6 +340,12 @@ def parse_data(contents, filename):
         df = get_s3_point_data(df, s3_url_rur_pop_kop, "rur_pop_kop", coord_projection="ESRI:54009")
         df = get_s3_point_data(df, s3_url_co2,"co2", coord_projection="ESRI:54009")
         df = get_s3_point_data(df, s3_url_no2, "no2", coord_projection="ESRI:54009")
+    if 'latitude' and 'longitude' in df.columns:
+        rurality_definitions = pd.read_csv("rurality_legend.txt", sep = "\t")
+        kg_definitions = pd.read_csv("kg_legend.txt", sep = "\t")
+        id_to_rurality = rurality_definitions.set_index('id')['definition'].to_dict()
+        id_to_kg = kg_definitions.set_index('id')['definition'].to_dict()
+        df = get_s3_point_data(df, OMEINFO_DATA_VERSION, rurality_def = id_to_rurality, kg_def = id_to_kg, coord_projection="EPSG:4326")
     return df
 
 @app.callback(Output('df_store', 'data'),
