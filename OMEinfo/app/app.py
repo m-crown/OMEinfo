@@ -522,7 +522,7 @@ def download(n_clicks):
 def download_df(n_clicks, df):
     df = pd.read_json(df)
     df_download = df.drop(columns = ["rurality_id", "koppen_geiger_id"])
-    return dcc.send_data_frame(df_download.to_csv, "annotated_metadata.csv", index = False, header=True, sep=",")
+    return dcc.send_data_frame(df_download.to_csv, "annotated_metadata.tsv", index = False, header=True, sep="\t")
 
 @app.callback(
     Output('output-iframe-title', 'children'),

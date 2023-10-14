@@ -22,24 +22,34 @@ def get_s3_point_data(df, version, rurality_def, kg_def, coord_projection="EPSG:
             pov_values = []
             co2_values = []
             no2_values = []
+            error = []
             for _, row in df.iterrows():
                 x, y = row["longitude"], row["latitude"]
                 # Read pixel values for all bands at coordinates (x, y)
-                pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1, 2, 3, 4, 5, 6])
-                pop_density_values.append(float(pointdata.data[0]))
-                rurality_values.append(int(pointdata.data[1]))
-                koppen_values.append(int(pointdata.data[2]))
-                pov_values.append(int(pointdata.data[3]))
-                co2_values.append(float(pointdata.data[4]))
-                no2_values.append(float(pointdata.data[5]))
-            
+                try:
+                    pointdata = cog.point(x, y, coord_crs=coord_projection, indexes=[1, 2, 3, 4, 5, 6])
+                    pop_density_values.append(float(pointdata.data[0]))
+                    rurality_values.append(int(pointdata.data[1]))
+                    koppen_values.append(int(pointdata.data[2]))
+                    pov_values.append(int(pointdata.data[3]))
+                    co2_values.append(float(pointdata.data[4]))
+                    no2_values.append(float(pointdata.data[5]))
+                    error.append(None)
+                except Exception as e:
+                    pop_density_values.append(None)
+                    rurality_values.append(None)
+                    koppen_values.append(None)
+                    pov_values.append(None)
+                    co2_values.append(None)
+                    no2_values.append(None)
+                    error.append(e)
             df["rurality_id"] = rurality_values
             df["Population Density"] = pop_density_values
             df["koppen_geiger_id"] = koppen_values
             df["Relative Deprivation"] = pov_values
             df["Tropospheric Nitrogen Dioxide Emissions"] = no2_values
             df["Fossil Fuel CO2 emissions"] = co2_values
-
+            df["error"] = error
     
     elif version == "1.0.0":
         if user_url:
@@ -101,7 +111,7 @@ def main():
     parser.add_argument("--location", type = str, help = "location in latitude,longitude EPSG:4326 format, input string in format 'sample,latitude,longitude'")
     parser.add_argument("--data_version", type = str, help = "version of data to use", default = "2.0.0")
     parser.add_argument("--source_data", type = str, help = "s3 url to data or filepath to local version")
-    parser.add_argument("--output_file", type = str, help = "name of output file", default = "annotated_locations.csv")
+    parser.add_argument("--output_file", type = str, help = "name of output file", default = "annotated_locations.tsv")
     parser.add_argument("--n_samples", type = int, help = "number of output summary table samples to show in command line", default = 10)
     parser.add_argument("--quiet", type = bool, help = "suppress console output", default = False)
     args = parser.parse_args()
@@ -122,8 +132,13 @@ def main():
     id_to_kg = kg_definitions.set_index('id')['definition'].to_dict()
 
     if args.location_file:
-        locations_df = pd.read_csv(args.location_file)
-        #check sample latitude and longitude columns are present in dataframe
+        if args.location_file.endswith('.csv'):
+            delimiter = ','
+        elif args.location_file.endswith('.tsv'):
+            delimiter = '\t'
+        else:
+            raise ValueError("File format not supported. Please provide a CSV or TSV file.")
+        locations_df = pd.read_csv(args.location_file, delimiter = delimiter)        #check sample latitude and longitude columns are present in dataframe
         
         if not set(["sample", "latitude", "longitude"]).issubset(set(locations_df.columns)):
             console.print("Location file must contain columns sample, latitude and longitude", style = "bold red")
@@ -134,24 +149,25 @@ def main():
     if args.location:
         individual_locations_df = pd.DataFrame([args.location.split(",")], columns = ["sample", "latitude", "longitude"])
         locations_df = pd.concat([locations_df, individual_locations_df])
-
-    filtered_locations_df  = locations_df[locations_df[['sample', 'latitude', 'longitude']].notna().all(axis=1)]
-    console.print(f"Loaded locations: {len(filtered_locations_df)}", style = "bold green")    
-    console.print(f"Missing required metadata: {len(locations_df) - len(filtered_locations_df)}", style = "bold red")  
+    
+    console.print(f"Loaded locations: {len(locations_df)}", style = "bold green")
+    metadata_filtered_locations_df  = locations_df[locations_df[['sample', 'latitude', 'longitude']].notna().all(axis=1)]
+    console.print(f"Missing required metadata: {len(locations_df) - len(metadata_filtered_locations_df)}", style = "bold red")  
+    filtered_locations_df = metadata_filtered_locations_df[metadata_filtered_locations_df[['latitude', 'longitude']].apply(lambda x: -90 <= x["latitude"] <= 90 and -180 <= x["longitude"] <= 180, axis=1)]
+    console.print(f"Invalid lat/long format: {len(locations_df) - len(filtered_locations_df)}", style = "bold red")      
     tasks = ["Annotating metadata"]
 
     with console.status("[bold green]Annotating metadata...") as status:
         while tasks:
             task = tasks.pop(0)
             start_time = datetime.datetime.now()
-            #annotated_locations = get_s3_point_data(filtered_locations_df.copy(), args.data_version, id_to_rurality, id_to_kg, user_url = args.source_data)
+            annotated_locations = get_s3_point_data(filtered_locations_df.copy(), args.data_version, id_to_rurality, id_to_kg, user_url = args.source_data)
             end_time = datetime.datetime.now()
             c = end_time - start_time
             minutes = int(c.total_seconds() // 60)
             seconds = c.total_seconds() % 60
             console.print(f'Annotation complete! {str(len(filtered_locations_df))} samples analysed in {str(minutes)} mins {str(round(seconds,2))} secs. :white_check_mark:')
-            annotated_locations = pd.read_csv(args.output_file)
-            annotated_locations.to_csv(args.output_file, index = False)
+            annotated_locations.to_csv(args.output_file, index = False, sep = "\t")
             
 
     
