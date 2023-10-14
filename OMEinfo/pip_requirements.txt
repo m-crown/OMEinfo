@@ -1,2 +1,3 @@
 rasterio
 rio-tiler
+rich
