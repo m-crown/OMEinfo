@@ -1,3 +1,0 @@
-rasterio
-rio-tiler
-rich

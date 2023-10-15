@@ -1,9 +1,0 @@
-python==3.10
-dash
-plotly
-numpy
-pandas
-scipy
-dash-bootstrap-components
-geopy
-pyproj
