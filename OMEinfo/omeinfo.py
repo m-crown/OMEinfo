@@ -1,7 +1,7 @@
 #should take as input a file and a data packet version? or a local filepath
 import argparse
 import pandas as pd
-
+import requests
 from rio_tiler.io import Reader
 
 from rich.table import Table
@@ -121,11 +121,18 @@ def main():
     console = Console()
 
     console.print(f"OMEinfo CLI Version: {OMEINFO_CLI_VERSION}", style = "bold green")
+    if args.data_version == "1.0.0":
+        bibtex_url = "https://raw.githubusercontent.com/m-crown/OMEinfo/main/citations/v1_citations.bib"
+    elif args.data_version == "2.0.0":
+        bibtex_url = "https://raw.githubusercontent.com/m-crown/OMEinfo/main/citations/v2_citations.bib"
+    else:
+        raise ValueError("Invalid version number. Must be 1.0.0 or 2.0.0")
+    
     if args.source_data:
-        console.print(f"Using user supplied source data: {args.source_data}", style = "green")
+        console.print(f"Using user supplied source data: {args.source_data}, as data version {args.data_version}", style = "green")
     else:
         console.print(f"Using OMEinfo Data Version: {args.data_version}", style = "green")
-
+    
     rurality_definitions = pd.read_csv("rurality_legend.txt", sep = "\t")
     id_to_rurality = rurality_definitions.set_index('id')['definition'].to_dict()
     kg_definitions = pd.read_csv("kg_legend.txt", sep = "\t")
@@ -148,6 +155,7 @@ def main():
     
     if args.location:
         individual_locations_df = pd.DataFrame([args.location.split(",")], columns = ["sample", "latitude", "longitude"])
+        individual_locations_df[["latitude", "longitude"]] = individual_locations_df[["latitude", "longitude"]].astype(float)
         locations_df = pd.concat([locations_df, individual_locations_df])
     
     console.print(f"Loaded locations: {len(locations_df)}", style = "bold green")
@@ -169,6 +177,14 @@ def main():
             console.print(f'Annotation complete! {str(len(filtered_locations_df))} samples analysed in {str(minutes)} mins {str(round(seconds,2))} secs. :white_check_mark:')
             annotated_locations.to_csv(args.output_file, index = False, sep = "\t")
             
+            response = requests.get(bibtex_url)
+            if response.status_code == 200:
+                bibtex_content = response.text
+                with open("omeinfo_citations.bib", "w") as file:
+                    file.write(bibtex_content)
+                console.print(f"BibTeX file downloaded successfully, saved to: omeinfo_citations.bib", style = "bold green")
+            else:
+                console.print(f"Failed to download BibTeX file. Status code: {response.status_code}")       
 
     
     if not args.quiet:
@@ -176,7 +192,7 @@ def main():
             caption = f"OMEinfo annotation with user supplied data file: {args.source_data}"
         else:
             caption = f"OMEinfo annotation with OMEinfo Data Version: v{args.data_version}"
-        annotated_locations["Tropospheric Nitrogen Dioxide Emissions"] = annotated_locations["Tropospheric Nitrogen Dioxide Emissions"].apply(lambda x: '{:.{}e}'.format(x, 2))
+        annotated_locations.loc[annotated_locations["Tropospheric Nitrogen Dioxide Emissions"].isna() == False,"Tropospheric Nitrogen Dioxide Emissions"] = annotated_locations.loc[annotated_locations["Tropospheric Nitrogen Dioxide Emissions"].isna() == False,"Tropospheric Nitrogen Dioxide Emissions"].apply(lambda x: '{:.{}e}'.format(x, 2))
         annotated_locations[["Fossil Fuel CO2 emissions", "Population Density"]] = annotated_locations[["Fossil Fuel CO2 emissions", "Population Density"]].round(2)
         
         table = Table(show_header=True, header_style="bold magenta", title = f"OMEinfo metadata annotation summary (top {args.n_samples})", caption = caption, caption_justify = "center")
