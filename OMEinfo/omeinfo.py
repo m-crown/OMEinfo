@@ -105,7 +105,12 @@ def get_s3_point_data(df, version, rurality_def, kg_def, coord_projection="EPSG:
     return df
 
 def main():
-    parser = argparse.ArgumentParser(prog = "OMEinfo", description = 'spear')   
+    parser = argparse.ArgumentParser(prog = "omeinfo.py", description = '''
+                                     The OMEinfo command-line tool enables users to annotate geographical metadata, 
+                                     including Koppen climate classification, degree of rurality, population density, 
+                                     and fossil fuel CO2 emissions, from user-provided location data. 
+                                     The tool offers options for selecting the data version and the data source. 
+                                     Annotations are stored in a specified output file in TSV format.''')   
 
     parser.add_argument('--location_file', type = str, help = "file containing locations")
     parser.add_argument("--location", type = str, help = "location in latitude,longitude EPSG:4326 format, input string in format 'sample,latitude,longitude'")
