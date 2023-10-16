@@ -46,7 +46,7 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 2. `cd OMEinfo/OMEinfo`
 3. Create a conda environment using the yml file at `conda_cli_requirements.yml`. *Note* The file `conda_requirements.yml` is used in the Docker container and writes the base environment. It is not recommended to use this file for CLI usage.
 4. Activate the conda environment: `conda activate omeinfo`
-5. Copy OMEinfo to the environment bin: `cp omeinfo.py $CONDA_PREFIX/bin/
+5. Copy OMEinfo to the environment bin: `cp omeinfo.py $CONDA_PREFIX/bin/`
 
 ## Usage
 
