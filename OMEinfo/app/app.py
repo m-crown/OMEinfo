@@ -3,7 +3,7 @@ import datetime
 import io
 import plotly.graph_objs as go
 import plotly.express as px
-
+from io import StringIO
 import dash
 from dash.dependencies import Input, Output, State
 from dash import dcc
@@ -26,7 +26,7 @@ import dash_loading_spinners as dls
 # the exception.
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/dbc.min.css"] 
 
-APP_VERSION = "0.1.0"
+APP_VERSION = "1.0.0"
 LOGO_BASE64 = base64.b64encode(open("assets/logos/logo_brand.png", 'rb').read()).decode('ascii')
 OMEINFO_DATA_VERSION = os.environ.get('OMEINFO_VERSION', "2.0.0")
 
@@ -36,18 +36,18 @@ version_info = {"1.0.0" : {"data_list_group" : dbc.ListGroup([dbc.ListGroupItem(
                                           "Fossil Fuel CO2 emissions" : {"comment" : "Fossil fuel CO2 emissions are derived from the ODIAC data product, originally developed from the GOSAT project, and provide an indication of CO2 emissions from fossil fuel combustion, cement production and gas flaring, at a 1km resolution.", "source" : '<a href="https://odiac.org/index.html">ODIAC</a>', "value" : "co2", "title" : "Fossil Fuel CO2 Emissions", "filepath": "assets/mean-co2.html"},
                                           "Tropospheric Nitrogen Dioxide Emissions" : {"comment" : "Tropospheric NO2 concentration is determined using the Copernicus Sentinel 5p satellite. Current data is derived from an annual mean tropospheric vertical column of NO2 for 2022, at a resolution of 1113.2m per pixel.", "source" : '<a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S5P_OFFL_L3_NO2#bands">Sentinel S5P</a>', "value" : "mean_no2", "title" : "Tropospheric Nitrogen Dioxide Emissions", "filepath": "assets/mean_no2.html"}, 
                                          
-                                          "Koppen Geiger" : {"comment" : "Koppen-Geiger climate classification is determined using the model shared in Beck et al. (2018). This model provides an updated classification separated into 30 subtypes.", "source" : '<a href="https://www.nature.com/articles/sdata2018214">Beck et al. (2018)</a>', "value" : "koppen_geiger", "title": "Koppen-Geiger climate classification", "filepath": "assets/koppen-geiger.html"}}},
+                                          "Koppen Geiger" : {"comment" : "Koppen-Geiger climate classification is determined using the model shared in Beck et al. (2018). This model provides an updated classification separated into 30 subtypes.", "source" : '<a href="https://www.nature.com/articles/sdata2018214">Beck et al. (2018)</a>', "value" : "koppen_geiger", "title": "Koppen-Geiger climate classification", "filepath": "assets/koppen-geiger.html"}},
                             "data_bibtex" : "https://raw.githubusercontent.com/m-crown/OMEinfo/main/citations/v1_citations.bib",
-                            "version_output_filename" : "omeinfo_v1_citations.bib",
+                            "version_output_filename" : "omeinfo_v1_citations.bib"},
                 "2.0.0" : {"data_list_group" : dbc.ListGroup([dbc.ListGroupItem("Open-source Data Inventory for Anthropogenic CO2"), dbc.ListGroupItem("Global Human Settlement Layer (European Commission)"), dbc.ListGroupItem("Sentinel 5p Satellite (European Space Agency)"), dbc.ListGroupItem("Beck et al. (2018)"), dbc.ListGroupItem("NASA Socioeconomic Data and Applications Center (SEDAC)")]), 
                            "data_info" : {"Rurality" : {"comment" : "Rurality is determined using the Global Human Settlement Layer, and provides a global coverage for rurality, in line with the UN’s Global Definition of Cities and Rural Areas, at 1km resolution.", "source" : '<a href="https://ghsl.jrc.ec.europa.eu/">Global Human Settlement Layer (R2019A)</a>', "value" : "rurality", "title": "Rurality", "filepath": "assets/rurality.html"},
                                           "Population Density" : {"comment" : "Population Density is determined using the Global Human Settlement Layer, and provides a global coverage for population density. In OMEinfo v2 dataset, the density is per 1km", "source" : '<a href="https://ghsl.jrc.ec.europa.eu/">Global Human Settlement Layer (R2019A)</a>', "value" : "pop_density", "title": "Population Density", "filepath": "assets/pop_density.html"},
                                           "Fossil Fuel CO2 emissions" : {"comment" : "Fossil fuel CO2 emissions are derived from the ODIAC data product, originally developed from the GOSAT project, and provide an indication of CO2 emissions from fossil fuel combustion, cement production and gas flaring, at a 1km resolution.", "source" : '<a href="https://odiac.org/index.html">ODIAC</a>', "value" : "co2", "title" : "Fossil Fuel CO2 Emissions", "filepath": "assets/mean-co2.html"},
                                           "Tropospheric Nitrogen Dioxide Emissions" : {"comment" : "Tropospheric NO2 concentration is determined using the Copernicus Sentinel 5p satellite. Current data is derived from an annual mean tropospheric vertical column of NO2 for 2022, at a resolution of 1113.2m per pixel.", "source" : '<a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S5P_OFFL_L3_NO2#bands">Sentinel S5P</a>', "value" : "mean_no2", "title" : "Tropospheric Nitrogen Dioxide Emissions", "filepath": "assets/mean_no2.html"}, 
                                           "Relative Deprivation" : {"comment" : "Relative Deprivation", "source" : '<a href="https://sedac.ciesin.columbia.edu/data/set/povmap-grdi-v1">SEDAC</a>', "value" : "rel_dep", "title" : "Relative Deprivation", "filepath": ""},
-                                          "Koppen Geiger" : {"comment" : "Koppen-Geiger climate classification is determined using the model shared in Beck et al. (2018). This model provides an updated classification separated into 30 subtypes.", "source" : '<a href="https://www.nature.com/articles/sdata2018214">Beck et al. (2018)</a>', "value" : "koppen_geiger", "title": "Koppen-Geiger climate classification", "filepath": "assets/koppen-geiger.html"}}},
+                                          "Koppen Geiger" : {"comment" : "Koppen-Geiger climate classification is determined using the model shared in Beck et al. (2018). This model provides an updated classification separated into 30 subtypes.", "source" : '<a href="https://www.nature.com/articles/sdata2018214">Beck et al. (2018)</a>', "value" : "koppen_geiger", "title": "Koppen-Geiger climate classification", "filepath": "assets/koppen-geiger.html"}},
                             "data_bibtex" : "https://raw.githubusercontent.com/m-crown/OMEinfo/main/citations/v2_citations.bib",
-                            "version_output_filename" : "omeinfo_v2_citations.bib"}
+                            "version_output_filename" : "omeinfo_v2_citations.bib"}}
 
 logo_image = html.Img(src='data:image/png;base64,{}'.format(LOGO_BASE64), height='50vh')
 brand_component = html.Div(logo_image, className='navbar-brand')
@@ -287,18 +287,22 @@ def parse_data(contents, filename):
     decoded = base64.b64decode(content_string)
 
     try:
-        if 'csv' in filename:
-            # Assume that the user uploaded a CSV or TXT file
-            df = pd.read_csv(
-                io.StringIO(decoded.decode('utf-8')), )
+        if filename.endswith('.csv'):
+            delimiter = ','
+        elif filename.endswith('.tsv'):
+            delimiter = '\t'
+            
+        df = pd.read_csv(
+            StringIO(decoded.decode('utf-8')), sep = delimiter)
     except Exception as e: #there needs to be a new exception here as this is not displaying a div
-        print(e)
         return html.Div([
             'There was an error processing this file.'
         ])
     if 'latitude' and 'longitude' in df.columns:
         rurality_definitions = pd.read_csv("rurality_legend.txt", sep = "\t")
+        rurality_definitions["id"] = rurality_definitions["id"].astype("str")
         kg_definitions = pd.read_csv("kg_legend.txt", sep = "\t")
+        kg_definitions["id"] = kg_definitions["id"].astype("str")
         id_to_rurality = rurality_definitions.set_index('id')['definition'].to_dict()
         id_to_kg = kg_definitions.set_index('id')['definition'].to_dict()
         df = get_s3_point_data(df, OMEINFO_DATA_VERSION, rurality_def = id_to_rurality, kg_def = id_to_kg, coord_projection="EPSG:4326")
@@ -332,7 +336,7 @@ def compute_dataframe(contents, filename):
         is_loading = True
 
         df = parse_data(contents, filename)
-        df['Rurality'] = df['Rurality'].astype('category')
+
         for col in df.columns:
             if df[col].isna().all():
                 df = df.drop(columns=[col])
@@ -370,7 +374,7 @@ def update_map(df, val):
         elif val == "Rurality":
             val = "rurality_id"
 
-        df = pd.read_json(df)
+        df = pd.read_json(StringIO(df))
         df['Rurality'] = df['Rurality'].astype('category')
         df['Koppen Geiger'] = df['Koppen Geiger'].astype('category')
         hover_text = df[[col for col in df.columns if col not in ['latitude', 'longitude', 'rurality_id', 'koppen_geiger_id']]].apply(lambda row: '<br>'.join([f"{col}: {row[col]}" for col in row.index]), axis=1)
@@ -422,7 +426,7 @@ def update_bar(df, val):
     if df and not val == None:
         comment = html.P(version_info[OMEINFO_DATA_VERSION]["data_info"][val]["comment"],className="card-text")
 
-        df = pd.read_json(df)
+        df = pd.read_json(StringIO(df))
         df['Rurality'] = df['Rurality'].astype('category')
         if val not in ["Population Density", "Fossil Fuel CO2 emissions", "Tropospheric Nitrogen Dioxide Emissions", "Relative Deprivation"]:
             fig = px.histogram(df,
@@ -462,7 +466,7 @@ def update_bar(df, val):
 def update_table(df):
     table = html.Div()
     if df:
-        df = pd.read_json(df)
+        df = pd.read_json(StringIO(df))
         df_display = df.copy()
         df_display = df.drop(columns = ["rurality_id", "koppen_geiger_id"])
         df_display["Tropospheric Nitrogen Dioxide Emissions"] = df_display["Tropospheric Nitrogen Dioxide Emissions"].apply(lambda x: '{:.{}e}'.format(x, 2))
@@ -520,7 +524,7 @@ def download(n_clicks):
     prevent_initial_call=True,
 )
 def download_df(n_clicks, df):
-    df = pd.read_json(df)
+    df = pd.read_json(StringIO(df))
     df_download = df.drop(columns = ["rurality_id", "koppen_geiger_id"])
     return dcc.send_data_frame(df_download.to_csv, "annotated_metadata.tsv", index = False, header=True, sep="\t")
 

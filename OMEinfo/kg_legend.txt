@@ -1,6 +1,6 @@
 id	definition
 0   No Data
-1	Tropical, rainforest
+1   Tropical, rainforest
 2	Tropical, monsoon
 3	Tropical, savannah
 4	Arid, desert, hot

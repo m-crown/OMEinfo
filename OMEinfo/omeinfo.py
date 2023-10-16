@@ -99,9 +99,9 @@ def get_s3_point_data(df, version, rurality_def, kg_def, coord_projection="EPSG:
     else: 
         raise ValueError("Invalid version number. Must be 1.0.0 or 2.0.0")
     
-    df["Rurality"] = df['rurality_id'].map(rurality_def)
-    df["Koppen Geiger"] = df["koppen_geiger_id"].map(kg_def)
-
+    df["Rurality"] = df['rurality_id'].astype("str").map(rurality_def)
+    df["Koppen Geiger"] = df["koppen_geiger_id"].astype("str").map(kg_def)
+    
     return df
 
 def main():
@@ -134,8 +134,10 @@ def main():
         console.print(f"Using OMEinfo Data Version: {args.data_version}", style = "green")
     
     rurality_definitions = pd.read_csv("rurality_legend.txt", sep = "\t")
+    rurality_definitions["id"] = rurality_definitions["id"].astype("str")
     id_to_rurality = rurality_definitions.set_index('id')['definition'].to_dict()
     kg_definitions = pd.read_csv("kg_legend.txt", sep = "\t")
+    kg_definitions["id"] = kg_definitions["id"].astype("str")
     id_to_kg = kg_definitions.set_index('id')['definition'].to_dict()
 
     if args.location_file:
