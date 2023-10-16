@@ -1,8 +1,0 @@
-dash
-plotly
-numpy
-pandas
-scipy
-dash-bootstrap-components
-geopy
-pyproj

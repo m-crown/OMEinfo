@@ -8,3 +8,5 @@ GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.tif
 .ipynb_checkpoints
 __pycache__/*
 __pycache__
+.pangea_api_cache
+data

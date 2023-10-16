@@ -1,0 +1,9 @@
+id	definition
+10	water
+11	very low density
+12	low density rural
+13	rural cluster
+21	suburban
+22	semi-dense urban
+23	dense urban
+30	urban centre
