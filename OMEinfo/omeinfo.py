@@ -169,7 +169,7 @@ def main():
     metadata_filtered_locations_df  = locations_df[locations_df[['sample', 'latitude', 'longitude']].notna().all(axis=1)]
     console.print(f"Missing required metadata: {len(locations_df) - len(metadata_filtered_locations_df)}", style = "bold red")  
     filtered_locations_df = metadata_filtered_locations_df[metadata_filtered_locations_df[['latitude', 'longitude']].apply(lambda x: -90 <= x["latitude"] <= 90 and -180 <= x["longitude"] <= 180, axis=1)]
-    console.print(f"Invalid lat/long format: {len(locations_df) - len(filtered_locations_df)}", style = "bold red")      
+    console.print(f"Invalid lat/long format: {len(metadata_filtered_locations_df) - len(filtered_locations_df)}", style = "bold red")      
     tasks = ["Annotating metadata"]
 
     with console.status("[bold green]Annotating metadata...") as status:
