@@ -102,6 +102,18 @@ options:
 
 For details on the process for the creation of the current data sources, see the explanation [here](https://m-crown.github.io/OMEinfo/data_processing.md)
 
+### Spatial Extents
+
+| Data Type   | Spatial Extents | Note |
+|---------------|----------|-------------|
+| Rurality | Upper Left: -179.999, 89.091<br>Lower Left: -179.999, -89.094</br>Upper Right: 179.997, 89.091<br>Lower Right: 179.997, -89.094</br> | |
+| Population Density | Upper Left: -179.999, 89.091<br>Lower Left: -179.999, -89.094</br>Upper Right: 179.997, 89.091<br>Lower Right: 179.997, -89.094</br> | |
+| Koppen Geiger Climate Classification | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br> | |
+| Fossil Fuel CO2 Emissions | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br> | |
+| Tropospheric NO2 Emissions | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br> | |
+| Relative Deprivation | Upper Left: -180.00, 82.183<br>Lower Left: -180.00, -55.983</br>Upper Right: 179.816, 82.183<br>Lower Right: 179.816, -55.983</br> | |
+| OMEinfo v2 Data Packet Combined | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -89.998</br>Upper Right: 179.996, 90.00<br>Lower Right: 179.996, -89.998</br> | |
+
 ### Citations
 
 | Data Source | Citation | DOI |
