@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+
 #should take as input a file and a data packet version? or a local filepath
 import argparse
 import pandas as pd
 import requests
 from rio_tiler.io import Reader
-
+import os
 from rich.table import Table
 from rich.console import Console
 
@@ -122,7 +124,7 @@ def main():
     args = parser.parse_args()
     
     OMEINFO_CLI_VERSION = "1.0.0"
-
+    OMEINFO_CONDA_PREFIX = os.environ.get('CONDA_PREFIX')
     console = Console()
 
     console.print(f"OMEinfo CLI Version: {OMEINFO_CLI_VERSION}", style = "bold green")
@@ -138,10 +140,10 @@ def main():
     else:
         console.print(f"Using OMEinfo Data Version: {args.data_version}", style = "green")
     
-    rurality_definitions = pd.read_csv("rurality_legend.txt", sep = "\t")
+    rurality_definitions = pd.read_csv(f"{OMEINFO_CONDA_PREFIX}/bin/rurality_legend.txt", sep = "\t")
     rurality_definitions["id"] = rurality_definitions["id"].astype("str")
     id_to_rurality = rurality_definitions.set_index('id')['definition'].to_dict()
-    kg_definitions = pd.read_csv("kg_legend.txt", sep = "\t")
+    kg_definitions = pd.read_csv(f"{OMEINFO_CONDA_PREFIX}/bin/kg_legend.txt", sep = "\t")
     kg_definitions["id"] = kg_definitions["id"].astype("str")
     id_to_kg = kg_definitions.set_index('id')['definition'].to_dict()
 
