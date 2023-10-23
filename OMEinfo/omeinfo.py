@@ -168,6 +168,10 @@ def main():
         locations_df = pd.concat([locations_df, individual_locations_df])
     
     console.print(f"Loaded locations: {len(locations_df)}", style = "bold green")
+    if len(locations_df) == 0:
+        console.print("No locations provided. Exiting.", style = "bold red")
+        raise ValueError("No locations provided. Exiting.")
+    
     metadata_filtered_locations_df  = locations_df[locations_df[['sample', 'latitude', 'longitude']].notna().all(axis=1)]
     console.print(f"Missing required metadata: {len(locations_df) - len(metadata_filtered_locations_df)}", style = "bold red")  
     filtered_locations_df = metadata_filtered_locations_df[metadata_filtered_locations_df[['latitude', 'longitude']].apply(lambda x: -90 <= x["latitude"] <= 90 and -180 <= x["longitude"] <= 180, axis=1)]
