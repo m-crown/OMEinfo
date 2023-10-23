@@ -104,7 +104,7 @@ options:
 | rurpopkop_v1_cog.tif | [rurpopkop_v1_cog.tif](s3://cloudgeotiffbucket/rurpopkop_v1_cog.tif) | Rurality, Population Density, and Koppen-Geiger Climate Classification |
 | no2_v1_cog.tif | [no2_v1_cog.tif](s3://cloudgeotiffbucket/no2_v1_cog.tif) | Tropospheric NO2 Emissions |
 
-For details on the process for the creation of the current data sources, see the explanation [here](https://github.com/m-crown/OMEinfo/data_processing.md)
+For details on the process for the creation of the current data sources, see the explanation [here](https://github.com/m-crown/OMEinfo/blob/main/data_processing.md)
 
 ### Spatial Extents
 
