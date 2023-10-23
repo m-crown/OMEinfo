@@ -42,7 +42,7 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 5. Run the Docker container: `docker run -p 8050:8050 omeinfo`
 
 ### Command Line Tool
-0. Install micromamba/mamba/conda.
+0. Install [mamba](). 
 1. Clone this repository: `git clone https://github.com/m-crown/OMEinfo.git`
 2. `cd OMEinfo/OMEinfo`
 3. Create a conda/mamba/micromamba environment using the yml file at `conda_cli_requirements.yml`. *Note* The file `conda_requirements.yml` is used in the Docker container and writes the base environment. It is not recommended to use this file for CLI usage.
