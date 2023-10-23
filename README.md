@@ -30,37 +30,42 @@ OMEinfo is an open-source bioinformatics tool designed to automate the retrieval
 OMEinfo is provided as a Docker container and command line tool, which can be easily set up in a local environment or on cloud-based platforms.
 
 ### Pre-built docker image
-1. Install Docker on your machine following the [official installation guide](https://docs.docker.com/get-docker/).
+1. Install Docker on your machine following the [official installation guide](https://docs.docker.com/get-docker/). NOTE: If running on Windows, Docker will also require Windows Subsystem for Linux to be installed - see the documentation [here](https://learn.microsoft.com/en-us/windows/wsl/install). You may also need to disable or allow WSL access to the internet in your firewall.
 2. Pull the Docker image from Docker-Hub: `docker pull mattcrown/omeinfo:latest` or `docker pull mattcrown/omeinfo:1.0.0`
-3. Run the Docker container: `docker run -p 8050:8050 omeinfo`
+3. Run the Docker container: `docker run -p 8050:8050 mattcrown/omeinfo:latest` or `docker run -p 8050:8050 mattcrown/omeinfo:1:0:0` (see usage section for more parameters when running the docker container).
 
 ### Build image from Source
-1. Install Docker on your machine following the [official installation guide](https://docs.docker.com/get-docker/).
+1. Install Docker on your machine following the [official installation guide](https://docs.docker.com/get-docker/). NOTE: If running on Windows, Docker will also require Windows Subsystem for Linux to be installed - see the documentation [here](https://learn.microsoft.com/en-us/windows/wsl/install). You may also need to disable or allow WSL access to the internet in your firewall.
 2. Clone this repository: `git clone https://github.com/m-crown/OMEinfo.git`
 3. Navigate to the project app directory: `cd OMEinfo/OMEinfo`
 4. Build the Docker image: `docker build -t omeinfo .` Note: you may need to prefix this command with sudo.
 5. Run the Docker container: `docker run -p 8050:8050 omeinfo`
 
 ### Command Line Tool
+0. Install micromamba/mamba/conda.
 1. Clone this repository: `git clone https://github.com/m-crown/OMEinfo.git`
 2. `cd OMEinfo/OMEinfo`
-3. Create a conda environment using the yml file at `conda_cli_requirements.yml`. *Note* The file `conda_requirements.yml` is used in the Docker container and writes the base environment. It is not recommended to use this file for CLI usage.
-4. Activate the conda environment: `conda activate omeinfo`
-5. Copy OMEinfo to the environment bin: `cp omeinfo.py $CONDA_PREFIX/bin/`
+3. Create a conda/mamba/micromamba environment using the yml file at `conda_cli_requirements.yml`. *Note* The file `conda_requirements.yml` is used in the Docker container and writes the base environment. It is not recommended to use this file for CLI usage.
+5. Activate the conda environment: `conda activate omeinfo`
+6. Copy OMEinfo to the environment bin: `cp omeinfo.py $CONDA_PREFIX/bin/`
+7. Copy Rurality and Koppen-Geiger legends to bin: `cp *.txt $CONDA_PREFIX/bin/`
 
 ## Usage
 
 ### Dash App
 1. Run the Docker container:
-   * For default mode: `docker run -p 8050:8050 omeinfo`
+   * For default mode: `docker run -p 8050:8050 omeinfo` or `docker run -p 8050:8050 mattcrown/omeinfo:latest` if you pulled the image from Docker Hub.
    * To specify a specific OMEinfo data version: `docker run -p 8050:8050 -e OMEINFO_VERSION data_version omeinfo` where data version may be 1.0.0 or 2.0.0
-3. Open the OMEinfo web application in your browser at `http://0.0.0.0:8050`.
-4. Upload a CSV or TSV file containing geolocation data (latitude and longitude) using the provided interface. A test addresses file is distributed with the OMEinfo repo, `OMEinfo/test_data`. `test_addresses` is a large sample metadata file, and can take some time to load. `test_addresses2.csv` is a subset of the larger set, and will load in approx 15 seconds.
+3. Open the OMEinfo web application in your browser at `http://localhost:8050`.
+4. Upload a CSV or TSV file containing geolocation data (latitude and longitude) using the provided interface. A test addresses file is distributed with the OMEinfo GitHub repo, `OMEinfo/test_data/test_addresses.tsv`, which provides example locations covering a variety of possible annotations. Download this file or clone the repo to use it within the Docker app (or CLI). NOTE: if downloading the file, use [this](https://raw.githubusercontent.com/m-crown/OMEinfo/main/test_data/test_addresses.tsv) link for the raw file, and be aware that some browsers may add `.txt` suffix to the file. Be sure to upload CSV or TSV files with `.csv` or `.tsv` suffixes for compatibility. 
 5. The application will retrieve the geographical metadata for the uploaded locations and display the results on a map and in a histogram.
 6. You can choose to display metadata features as the colour coding on the map and as the histogram's x-axis.
-7. A table with the processed data is also provided for further analysis. 
+7. A table with the processed data is also provided for further analysis.
+8. When finished using OMEinfo app, stop the Docker container using `docker stop <container_id_or_name>` where `<container_id_or_name>` is the path of your container instance e.g. `omeinfo` if built locally or `mattcrown/omeinfo:latest` if running an image from Docker Hub. You can list running containers in Docker using `docker ps`.
 
 ### Command Line Tool
+
+The command line tool requires use of conda or mamba https://mamba.readthedocs.io/en/latest/micromamba-installation.html
 
 ```
 usage: omeinfo.py [-h] [--location_file LOCATION_FILE] [--location LOCATION] [--data_version DATA_VERSION] [--source_data SOURCE_DATA] [--output_file OUTPUT_FILE] [--n_samples N_SAMPLES] [--quiet QUIET]
