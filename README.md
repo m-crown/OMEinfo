@@ -1,3 +1,7 @@
+![GitHub release (with filter)](https://img.shields.io/github/v/release/m-crown/omeinfo)
+![GitHub](https://img.shields.io/github/license/m-crown/omeinfo) 
+![Docker Pulls](https://img.shields.io/docker/pulls/mattcrown/omeinfo)
+
 <p align="center">
   <img src="https://github.com/m-crown/OMEinfo/blob/9831a26e93ad7a9e3accec5c5e8d38ce83259c0c/OMEinfo/app/assets/logo.png" alt="OMEinfo Logo" width="20%" height="auto" />
 </p>
