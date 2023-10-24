@@ -71,6 +71,8 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 6. A table with the processed data is also provided for further analysis.
 7. When finished using OMEinfo app, stop the Docker container using `docker stop <container_id_or_name>` where `<container_id_or_name>` is the path of your container instance e.g. `omeinfo` if built locally or `mattcrown/omeinfo:latest` if running an image from Docker Hub. You can list running containers in Docker using `docker ps`.
 
+![The OMEinfo Dash App](images/omeinfo_dash_app.png)
+
 ### Command Line Tool
 
 ```
@@ -94,6 +96,13 @@ options:
                         number of output summary table samples to show in command line
   --quiet QUIET         suppress console output
 ```
+<p align="center">
+  <img src="images/omeinfo_cli_processing.gif" alt="GIF of OMEinfo CLI processing data" width="50%" height="auto" />
+</p>
+
+<p align="center">
+  <img src="images/omeinfo_cli_complete.png" alt="Image of OMEinfo CLI on completion" width="50%" height="auto" />
+</p>
 
 ## Data Sources
 
