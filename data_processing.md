@@ -2,12 +2,14 @@
 
 ## Data Packet Version 2
 
-* The fossil fuel CO2 emissions data from ODIAC is averaged using the `average_geotif.py` script.
-* To obtain the Copernicus S3p NO2 geotiff files, the following code is executed in Google Earth Engine:
-```
-// Define the time range
-var start_date = '2022-01-01';  // The start date
-var end_date = '2022-12-31';  // The end date
+* The fossil fuel CO<sub>2</sub> emissions data from ODIAC is averaged using the `average_geotif.py` script.
+* To obtain the Copernicus S3p NO<sub>2</sub> geotiff files, the following code is executed in Google Earth Engine:
+  
+  ```
+  // Define the time range
+  var start_date = '2022-01-01';  // The start date
+  var end_date = '2022-12-31';  // The end date
+  ```
 
 // Define the product name
 var product = 'COPERNICUS/S5P/OFFL/L3_NO2';
@@ -39,6 +41,7 @@ Export.image.toDrive({
     cloudOptimized: true
   }
 });
+
 ```
 This produces an annual average NO2 value for each pixel. The files are then downloaded from Drive.
 
@@ -67,6 +70,7 @@ This produces an annual average NO2 value for each pixel. The files are then dow
 * The fossil fuel CO2 emissions data from ODIAC is averaged using the `average_geotif.py` script.
 * To obtain the Copernicus S3p NO2 geotiff files, the following code is executed in Google Earth Engine:
 ```
+
 // Define the time range
 var start_date = '2022-01-01';  // The start date
 var end_date = '2022-12-31';  // The end date
@@ -101,6 +105,7 @@ Export.image.toDrive({
     cloudOptimized: true
   }
 });
+
 ```
 This produces an annual average NO2 value for each pixel. The files are then downloaded from Drive.
 
@@ -118,10 +123,12 @@ This produces an annual average NO2 value for each pixel. The files are then dow
 
 * Create the COG files:
 ```
+
 rio cogeo create rurpopkop_v1.tif rurpopkop_v1_cog.tif
 rio cogeo create co2_v1.tif co2_v1_cog.tif
 rio cogeo create no2_v1.tif no2_v1_cog.tif
-```
 
+```
 * Upload the COG files to S3:
   `python3 cog_creator.py`
+```
