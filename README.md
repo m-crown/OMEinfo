@@ -10,6 +10,8 @@ OMEinfo is an open-source bioinformatics tool designed to automate the retrieval
 
 Preprint available now: [OMEinfo: Global Geographic Metadata for -omics Experiments](https://www.biorxiv.org/content/10.1101/2023.10.23.563576v1)
 
+See []()
+
 ## Features
 
 - Dash web application for user-friendly data upload and visualization
@@ -42,7 +44,7 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 
 1. Install Docker on your machine following the [official installation guide](https://docs.docker.com/get-docker/). NOTE: If running on Windows, Docker will also require Windows Subsystem for Linux to be installed - see the documentation [here](https://learn.microsoft.com/en-us/windows/wsl/install). You may also need to disable or allow WSL access to the internet in your firewall.
 2. Pull the Docker image from Docker-Hub: `docker pull mattcrown/omeinfo:latest` or `docker pull mattcrown/omeinfo:1.0.0`
-3. Run the Docker container: `docker run -p 8050:8050 mattcrown/omeinfo:latest` or `docker run -p 8050:8050 mattcrown/omeinfo:1:0:0` (see usage section for more parameters when running the docker container).
+3. Run the Docker container: `docker run -p 8050:8050 mattcrown/omeinfo:latest` or `docker run -p 8050:8050 mattcrown/omeinfo:1:0:0` ((see [Usage](#usage) for for more parameters when running the docker container).
 
 ### Build image from Source
 
@@ -50,7 +52,7 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 2. Clone this repository: `git clone https://github.com/m-crown/OMEinfo.git`
 3. Navigate to the project app directory: `cd OMEinfo/OMEinfo`
 4. Build the Docker image: `docker build -t omeinfo .` Note: you may need to prefix this command with sudo.
-5. Run the Docker container: `docker run -p 8050:8050 omeinfo`
+5. Run the Docker container: `docker run -p 8050:8050 omeinfo` (see [Usage](#usage) for more details)
 
 ### Command Line Tool
 
@@ -63,9 +65,11 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 6. Copy OMEinfo to the environment bin: `cp omeinfo.py $CONDA_PREFIX/bin/`
 7. Copy Rurality and Koppen-Geiger legends to bin: `cp *.txt $CONDA_PREFIX/bin/`
 
+(see [Usage](#usage) for more details)
+
 ## Usage
 
-### Dash App
+### Dash app walkthrough with test data. 
 
 1. Run the Docker container:
    * For default mode: `docker run -p 8050:8050 omeinfo` or `docker run -p 8050:8050 mattcrown/omeinfo:latest` if you pulled the image from Docker Hub.
@@ -79,7 +83,9 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 
 ![The OMEinfo Dash App](images/omeinfo_dash_app.png)
 
-### Command Line Tool
+### Command Line Tool walkthrough with test data.
+
+Running the command line tool requires only a single command. Assuming you want to analyse the 
 
 ```
 usage: omeinfo.py [-h] [--location_file LOCATION_FILE] [--location LOCATION] [--data_version DATA_VERSION] [--source_data SOURCE_DATA] [--output_file OUTPUT_FILE] [--n_samples N_SAMPLES] [--quiet QUIET]
@@ -110,6 +116,32 @@ options:
   <img src="images/omeinfo_cli_complete.png" alt="Image of OMEinfo CLI on completion" width="50%" height="auto" />
 </p>
 
+### Running OMEinfo with locally stored geoTIFF files
+
+By default, OMEinfo runs analyses with a version of the data packet stored in the cloud (currently, an AWS S3 bucket). It is also possible to run OMEinfo using a locally stored version of the data packet, should the remote version become unavailable.
+
+For the Dash app, build as normal, or download from Docker hub, and change directory to the location where the local version of the data packet is stored. On execution add the following parameters:
+
+`docker run -p 8050:8050 mattcrown/omeinfo:latest -v $PWD:/data/ -e OMEINFO_URL=/data/[DATA_PACKET_HERE] omeinfo`
+
+$PWD can also be replaced with the fully resolved path to the directory in which the data packet is stored on your machine. Replace [DATA_PACKET_HERE] with the filename(s) of the data packet files necessary for analysis. For example, if running the OMEinfo v2 data packet locally (a single file) the command would look like this:
+
+`docker run -p 8050:8050 -v $PWD:/data/ -e OMEINFO_URL=/data/omeinfo_v2.tif -e OMEINFO_VERSION=2.0.0 mattcrown/omeinfo:latest`
+
+and from the CLI tool:
+
+`omeinfo.py --data_version 2.0.0 --source_data omeinfo_v2.tif --location_file test_addresses.tsv`
+
+If running the OMEinfo v1 data packet, it would instead look like this:
+
+`docker run -p 8050:8050 -v $PWD:/data/ -e OMEINFO_URL=/data/rurpopkop_v1_cog.tif,/data/co2_v1_cog.tif,/data/no2_v1_cog.tif -e OMEINFO_VERSION=1.0.0 mattcrown/omeinfo:latest`
+
+and from the CLI tool (assuming you are currently in the directory with the data files and test data file):
+
+`omeinfo.py --data_version 1.0.0 --source_data rurpopkop_v1_cog.tif,co2_v1_cog.tif,no2_v1_cog.tif --location_file test_addresses.tsv`
+
+With the v1 data packet, it is important to specify files as a single comma-separated string, in the order RurPopKop file, CO2 file, NO2 file.
+
 ## Data Sources
 
 ### Current: OMEinfo V2 dataset
@@ -130,15 +162,15 @@ For details on the process for the creation of the current data sources, see the
 
 ### Spatial Extents
 
-| Data Type                             | Spatial Extents                                                                                                                      | Note |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---- |
-| Rurality                              | Upper Left: -179.999, 89.091<br>Lower Left: -179.999, -89.094</br>Upper Right: 179.997, 89.091<br>Lower Right: 179.997, -89.094</br> |      |
-| Population Density                    | Upper Left: -179.999, 89.091<br>Lower Left: -179.999, -89.094</br>Upper Right: 179.997, 89.091<br>Lower Right: 179.997, -89.094</br> |      |
-| Koppen Geiger Climate Classification  | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br>         |      |
-| Fossil Fuel CO<sub>2</sub> Emissions  | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br>         |      |
-| Tropospheric NO<sub>2</sub> Emissions | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br>         |      |
-| Relative Deprivation                  | Upper Left: -180.00, 82.183<br>Lower Left: -180.00, -55.983</br>Upper Right: 179.816, 82.183<br>Lower Right: 179.816, -55.983</br>   |      |
-| OMEinfo v2 Data Packet Combined       | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -89.998</br>Upper Right: 179.996, 90.00<br>Lower Right: 179.996, -89.998</br>     |      |
+| Data Type                             | Spatial Extents                                                                                                                      |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Rurality                              | Upper Left: -179.999, 89.091<br>Lower Left: -179.999, -89.094</br>Upper Right: 179.997, 89.091<br>Lower Right: 179.997, -89.094</br> |
+| Population Density                    | Upper Left: -179.999, 89.091<br>Lower Left: -179.999, -89.094</br>Upper Right: 179.997, 89.091<br>Lower Right: 179.997, -89.094</br> |
+| Koppen Geiger Climate Classification  | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br>         |
+| Fossil Fuel CO<sub>2</sub> Emissions  | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br>         |
+| Tropospheric NO<sub>2</sub> Emissions | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -90.00</br>Upper Right: 180.00, 90.00<br>Lower Right: 180.00, -90.00</br>         |
+| Relative Deprivation                  | Upper Left: -180.00, 82.183<br>Lower Left: -180.00, -55.983</br>Upper Right: 179.816, 82.183<br>Lower Right: 179.816, -55.983</br>   |
+| OMEinfo v2 Data Packet Combined       | Upper Left: -180.00, 90.00<br>Lower Left: -180.00, -89.998</br>Upper Right: 179.996, 90.00<br>Lower Right: 179.996, -89.998</br>     |
 
 ### Citations
 
