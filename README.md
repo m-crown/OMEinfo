@@ -116,15 +116,15 @@ options:
 
 | File Name      | File URL                                                 | Description                                                                                                           |
 | -------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| omeinfo_v2.tif | [omeinfo_v2.tif](s3://cloudgeotiffbucket/omeinfo_v2.tif) | All data sources unified in a single WGS84 COG. Additionally includes relative deprivation on top of V1 data sources. |
+| omeinfo_v2.tif | [s3://cloudgeotiffbucket/omeinfo_v2.tif](https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/omeinfo_v2.tif) | All data sources unified in a single WGS84 COG. Additionally includes relative deprivation on top of V1 data sources. |
 
 ### Past: OMEinfo V1 dataset
 
 | File Name            | File URL                                                             | Description                                                            |
 | -------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| co2_v1_cog.tif       | [co2_v1_cog.tif](s3://cloudgeotiffbucket/co2_v1_cog.tif)             | Fossil Fuel CO2 Emissions                                              |
-| rurpopkop_v1_cog.tif | [rurpopkop_v1_cog.tif](s3://cloudgeotiffbucket/rurpopkop_v1_cog.tif) | Rurality, Population Density, and Koppen-Geiger Climate Classification |
-| no2_v1_cog.tif       | [no2_v1_cog.tif](s3://cloudgeotiffbucket/no2_v1_cog.tif)             | Tropospheric NO2 Emissions                                             |
+| co2_v1_cog.tif       | [s3://cloudgeotiffbucket/co2_v1_cog.tif](https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/co2_v1_cog.tif)| Fossil Fuel CO2 Emissions |
+| rurpopkop_v1_cog.tif | [s3://cloudgeotiffbucket/rurpopkop_v1_cog.tif](https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/rurpopkop_v1_cog.tif) | Rurality, Population Density, and Koppen-Geiger Climate Classification |
+| no2_v1_cog.tif       | [s3://cloudgeotiffbucket/no2_v1_cog.tif)](https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/rurpopkop_v1_cog.tif) | Tropospheric NO2 Emissions |
 
 For details on the process for the creation of the current data sources, see the explanation [here](https://github.com/m-crown/OMEinfo/blob/main/data_processing.md)
 
