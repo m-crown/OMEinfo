@@ -205,7 +205,8 @@ def main():
             caption = f"OMEinfo annotation with user supplied data file: {args.source_data}"
         else:
             caption = f"OMEinfo annotation with OMEinfo Data Version: v{args.data_version}"
-        annotated_locations.loc[annotated_locations["Tropospheric Nitrogen Dioxide Emissions"].isna() == False,"Tropospheric Nitrogen Dioxide Emissions"] = annotated_locations.loc[annotated_locations["Tropospheric Nitrogen Dioxide Emissions"].isna() == False,"Tropospheric Nitrogen Dioxide Emissions"].apply(lambda x: '{:.{}e}'.format(x, 2))
+        
+        annotated_locations["Tropospheric Nitrogen Dioxide Emissions"] = annotated_locations["Tropospheric Nitrogen Dioxide Emissions"].apply(lambda x: '{:.{}e}'.format(x, 2))
         annotated_locations[["Fossil Fuel CO2 emissions", "Population Density"]] = annotated_locations[["Fossil Fuel CO2 emissions", "Population Density"]].round(2)
         
         table = Table(show_header=True, header_style="bold magenta", title = f"OMEinfo metadata annotation summary (top {args.n_samples})", caption = caption, caption_justify = "center")
