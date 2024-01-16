@@ -10,12 +10,12 @@ OMEinfo is an open-source bioinformatics tool designed to automate the retrieval
 
 Preprint available now: [OMEinfo: Global Geographic Metadata for -omics Experiments](https://www.biorxiv.org/content/10.1101/2023.10.23.563576v1)
 
-See []()
+See [here](#dash-app-walkthrough-with-test-data) for a walkthrough of using OMEinfo with test data.
 
 ## Features
 
 - Dash web application for user-friendly data upload and visualization
-- Custom Cloud Optimized GeoTIF file hosted on AWS S3 for efficient data access
+- Custom Cloud Optimized GeoTIF file hosted on Figshare for efficient data access
 - Integration with open data sources, such as Global Human Settlement Layer (GHSL)
 - Portable and lightweight Docker container for easy deployment
 - Adheres to FAIR and Open data principles for better reproducibility and collaboration
@@ -28,8 +28,8 @@ See []()
   - [Build image from Source](#build-image-from-source)
   - [Command Line Tool](#command-line-tool)
 - [Usage](#usage)
-  - [Dash App](#dash-app)
-  - [Command Line Tool](#command-line-tool-1)
+  - [Dash App Walkthrough](#dash-app-walkthrough-with-test-data)
+  - [Command Line Tool Walkthrough](#command-line-tool-walkthrough-with-test-data)
 - [Data Sources](#data-sources)
   - [Current: OMEinfo V2 dataset](#current-omeinfo-v2-dataset)
   - [Past: OMEinfo V1 dataset](#past-omeinfo-v1-dataset)
@@ -43,8 +43,8 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 ### Pre-built docker image
 
 1. Install Docker on your machine following the [official installation guide](https://docs.docker.com/get-docker/). NOTE: If running on Windows, Docker will also require Windows Subsystem for Linux to be installed - see the documentation [here](https://learn.microsoft.com/en-us/windows/wsl/install). You may also need to disable or allow WSL access to the internet in your firewall.
-2. Pull the Docker image from Docker-Hub: `docker pull mattcrown/omeinfo:latest` or `docker pull mattcrown/omeinfo:1.0.0`
-3. Run the Docker container: `docker run -p 8050:8050 mattcrown/omeinfo:latest` or `docker run -p 8050:8050 mattcrown/omeinfo:1:0:0` ((see [Usage](#usage) for for more parameters when running the docker container).
+2. Pull the Docker image from Docker-Hub: `docker pull mattcrown/omeinfo:latest` or `docker pull mattcrown/omeinfo:1.1.0`
+3. Run the Docker container: `docker run -p 8050:8050 mattcrown/omeinfo:latest` or `docker run -p 8050:8050 mattcrown/omeinfo:1.1.0` (see [Usage](#usage) for for more parameters when running the docker container).
 
 ### Build image from Source
 
@@ -69,7 +69,7 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 
 ## Usage
 
-### Dash app walkthrough with test data. 
+### Dash app walkthrough with test data 
 
 1. Run the Docker container:
    * For default mode: `docker run -p 8050:8050 omeinfo` or `docker run -p 8050:8050 mattcrown/omeinfo:latest` if you pulled the image from Docker Hub.
@@ -83,7 +83,7 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 
 ![The OMEinfo Dash App](images/omeinfo_dash_app.png)
 
-### Command Line Tool walkthrough with test data.
+### Command Line Tool walkthrough with test data
 
 Running the command line tool requires only a single command. Assuming you want to analyse the test addresses file from the GitHub repo, and are currently in the directory containing this file, run the following command:
 
@@ -107,7 +107,7 @@ options:
   --data_version DATA_VERSION
                         version of data to use
   --source_data SOURCE_DATA
-                        s3 url to data or filepath to local version
+                        url to data or filepath to local version
   --output_file OUTPUT_FILE
                         name of output file
   --n_samples N_SAMPLES
@@ -124,7 +124,7 @@ options:
 
 ### Running OMEinfo with locally stored geoTIFF files
 
-By default, OMEinfo runs analyses with a version of the data packet stored in the cloud (currently, an AWS S3 bucket). It is also possible to run OMEinfo using a locally stored version of the data packet, should the remote version become unavailable.
+By default, OMEinfo runs analyses with a version of the data packet stored in the cloud (currently, via Figshare). It is also possible to run OMEinfo using a locally stored version of the data packet, should the remote version become unavailable.
 
 For the Dash app, build as normal, or download from Docker hub, and change directory to the location where the local version of the data packet is stored. On execution add the following parameters:
 
@@ -154,15 +154,15 @@ With the v1 data packet, it is important to specify files as a single comma-sepa
 
 | File Name      | File URL                                                 | Description                                                                                                           |
 | -------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| omeinfo_v2.tif | [s3://cloudgeotiffbucket/omeinfo_v2.tif](https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/omeinfo_v2.tif) | All data sources unified in a single WGS84 COG. Additionally includes relative deprivation on top of V1 data sources. |
+| omeinfo_v2.tif | [Figshare](https://doi.org/10.6084/m9.figshare.25000343.v1) | All data sources unified in a single WGS84 COG. Additionally includes relative deprivation on top of V1 data sources. |
 
 ### Past: OMEinfo V1 dataset
 
 | File Name            | File URL                                                             | Description                                                            |
 | -------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| co2_v1_cog.tif       | [s3://cloudgeotiffbucket/co2_v1_cog.tif](https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/co2_v1_cog.tif)| Fossil Fuel CO2 Emissions |
-| rurpopkop_v1_cog.tif | [s3://cloudgeotiffbucket/rurpopkop_v1_cog.tif](https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/rurpopkop_v1_cog.tif) | Rurality, Population Density, and Koppen-Geiger Climate Classification |
-| no2_v1_cog.tif       | [s3://cloudgeotiffbucket/no2_v1_cog.tif)](https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/rurpopkop_v1_cog.tif) | Tropospheric NO2 Emissions |
+| co2_v1_cog.tif       | [Figshare](https://doi.org/10.6084/m9.figshare.25000025.v1)| Fossil Fuel CO2 Emissions |
+| rurpopkop_v1_cog.tif | [Figshare](https://doi.org/10.6084/m9.figshare.25000025.v1) | Rurality, Population Density, and Koppen-Geiger Climate Classification |
+| no2_v1_cog.tif       | [Figshare](https://doi.org/10.6084/m9.figshare.25000025.v1) | Tropospheric NO2 Emissions |
 
 For details on the process for the creation of the current data sources, see the explanation [here](https://github.com/m-crown/OMEinfo/blob/main/data_processing.md)
 
