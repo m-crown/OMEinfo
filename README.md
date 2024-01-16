@@ -85,7 +85,13 @@ OMEinfo is provided as a Docker container and command line tool, which can be ea
 
 ### Command Line Tool walkthrough with test data.
 
-Running the command line tool requires only a single command. Assuming you want to analyse the 
+Running the command line tool requires only a single command. Assuming you want to analyse the test addresses file from the GitHub repo, and are currently in the directory containing this file, run the following command:
+
+`omeinfo.py --location_file test_addresses.tsv`
+
+Upon running the command, a summary of the samples to be processed, and the versions of CLI tool and data packet being used will be presented. Upon completion, a table of the first 10 samples analysed will be shown, and a file with annotated metadata will be saved to the current directory, together with a BibTeX citation file of all citations necessary for crediting data authors.
+
+The full command line parameters are presented below:
 
 ```
 usage: omeinfo.py [-h] [--location_file LOCATION_FILE] [--location LOCATION] [--data_version DATA_VERSION] [--source_data SOURCE_DATA] [--output_file OUTPUT_FILE] [--n_samples N_SAMPLES] [--quiet QUIET]
