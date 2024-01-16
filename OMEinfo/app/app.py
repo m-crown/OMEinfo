@@ -29,6 +29,7 @@ external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/dbc.min.css"]
 APP_VERSION = "1.0.0"
 LOGO_BASE64 = base64.b64encode(open("assets/logos/logo_brand.png", 'rb').read()).decode('ascii')
 OMEINFO_DATA_VERSION = os.environ.get('OMEINFO_VERSION', "2.0.0")
+OMEINFO_URL = os.environ.get('OMEINFO_URL', None)
 
 version_info = {"1.0.0" : {"data_list_group" : dbc.ListGroup([dbc.ListGroupItem("Open-source Data Inventory for Anthropogenic CO2"), dbc.ListGroupItem("Global Human Settlement Layer (European Commission)"), dbc.ListGroupItem("Sentinel 5p Satellite (European Space Agency)"), dbc.ListGroupItem("Beck et al. (2018)")]),
                            "data_info" : {"Rurality" : {"comment" : "Rurality is determined using the Global Human Settlement Layer, and provides a global coverage for rurality, in line with the UN’s Global Definition of Cities and Rural Areas, at 1km resolution.", "source" : '<a href="https://ghsl.jrc.ec.europa.eu/">Global Human Settlement Layer (R2019A)</a>', "value" : "rurality", "title": "Rurality", "filepath": "assets/rurality.html"},
@@ -305,7 +306,7 @@ def parse_data(contents, filename):
         kg_definitions["id"] = kg_definitions["id"].astype("str")
         id_to_rurality = rurality_definitions.set_index('id')['definition'].to_dict()
         id_to_kg = kg_definitions.set_index('id')['definition'].to_dict()
-        df = get_s3_point_data(df, OMEINFO_DATA_VERSION, rurality_def = id_to_rurality, kg_def = id_to_kg, coord_projection="EPSG:4326")
+        df = get_s3_point_data(df, OMEINFO_DATA_VERSION, user_url = OMEINFO_URL, rurality_def = id_to_rurality, kg_def = id_to_kg, coord_projection="EPSG:4326")
     return df
 
 @app.callback(

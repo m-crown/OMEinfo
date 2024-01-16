@@ -16,7 +16,7 @@ def get_s3_point_data(df, version, rurality_def, kg_def, coord_projection="EPSG:
         if user_url:
             s3_url = user_url
         else:
-            s3_url = "https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/omeinfo_v2.tif"
+            s3_url = "https://figshare.com/ndownloader/files/44053304" #https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/omeinfo_v2.tif
         with Reader(s3_url) as cog:
             rurality_values = []
             pop_density_values = []
@@ -60,9 +60,9 @@ def get_s3_point_data(df, version, rurality_def, kg_def, coord_projection="EPSG:
             s3_url_co2 = user_url[1]
             s3_url_no2 = user_url[2]
         else:
-            s3_url_rur_pop_kop = f"https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/rurpopkop_v1_cog.tif"
-            s3_url_co2 = f"https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/co2_v1_cog.tif"
-            s3_url_no2 = f"https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/no2_v1_cog.tif"
+            s3_url_rur_pop_kop = f"https://figshare.com/ndownloader/files/44053298" #https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/rurpopkop_v1_cog.tif
+            s3_url_co2 = f"https://figshare.com/ndownloader/files/44053301" #https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/co2_v1_cog.tif
+            s3_url_no2 = f"https://figshare.com/ndownloader/files/44051945" #https://cloudgeotiffbucket.s3.eu-north-1.amazonaws.com/no2_v1_cog.tif
         with Reader(s3_url_rur_pop_kop) as cog:
             rurality_values = []
             pop_density_values = []
@@ -117,7 +117,7 @@ def main():
     parser.add_argument('--location_file', type = str, help = "file containing locations")
     parser.add_argument("--location", type = str, help = "location in latitude,longitude EPSG:4326 format, input string in format 'sample,latitude,longitude'")
     parser.add_argument("--data_version", type = str, help = "version of data to use", default = "2.0.0")
-    parser.add_argument("--source_data", type = str, help = "s3 url to data or filepath to local version")
+    parser.add_argument("--source_data", type = str, help = "url to data or filepath to local version")
     parser.add_argument("--output_file", type = str, help = "name of output file", default = "annotated_locations.tsv")
     parser.add_argument("--n_samples", type = int, help = "number of output summary table samples to show in command line", default = 10)
     parser.add_argument("--quiet", type = bool, help = "suppress console output", default = False)
