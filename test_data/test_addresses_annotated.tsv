@@ -1,0 +1,8 @@
+sample	latitude	longitude	note	rurality_id	Population Density	koppen_geiger_id	Fossil Fuel CO2 emissions	Tropospheric Nitrogen Dioxide Emissions	Rurality	Koppen Geiger
+Kensington	51.5	-0.18	Kensington Palace, London	30	10069.0	15	189.51097106933594	0.0001311163571230781	urban centre	Temperate, no dry season, warm summer
+Lumiar	-22.35	-42.32	Lumiar, Brazil	13	551.0	14	3.8018646240234375	1.1042623804372029e-05	rural cluster	Temperate, no dry season, hot summer
+Bavaria	49.59	9.16	Rural location in Bavaria, Germany	12	58.0	26	3.282043218612671	4.292662750502642e-05	low density rural	Cold, no dry season, warm summer
+Mityana	0.397	32.04	Mityana, Uganda	30	11873.0	2	12.237187385559082	1.312631528964078e-05	urban centre	Tropical, monsoon
+Sululta	9.188	38.747	Sululta, Ethiopia	11	0.0	12	6.0778632164001465	1.1745401677993147e-05	very low density	Temperate, dry winter, warm summer
+Tokyo	35.67	139.732	Minato city, Tokyo	30	10411.0	14	2198.037841796875	0.00019998651812654357	urban centre	Temperate, no dry season, hot summer
+Rantasalmi	62.041	28.311	Rantasalmi, Finland	11	37.0	27	0.8427837491035461	1.9512992734796754e-05	very low density	Cold, no dry season, cold summer
