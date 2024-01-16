@@ -9,40 +9,38 @@
   // Define the time range
   var start_date = '2022-01-01';  // The start date
   var end_date = '2022-12-31';  // The end date
-  ```
 
-// Define the product name
-var product = 'COPERNICUS/S5P/OFFL/L3_NO2';
+  // Define the product name
+  var product = 'COPERNICUS/S5P/OFFL/L3_NO2';
 
-// Create an ImageCollection for the desired time range and product
-var collection = ee.ImageCollection(product)
+  // Create an ImageCollection for the desired time range and product
+  var collection = ee.ImageCollection(product)
                   .select('tropospheric_NO2_column_number_density')
                   .filterDate(start_date, end_date);
 
-print('Number of images in the collection:', collection.size());
+  print('Number of images in the collection:', collection.size());
 
-// Calculate the mean of the ImageCollection
-var mean = collection.mean();
+  // Calculate the mean of the ImageCollection
+  var mean = collection.mean();
 
-// Define the export parameters
-var exportParams = {
-   maxPixels: 1e13,
- };
+  // Define the export parameters
+  var exportParams = {
+     maxPixels: 1e13,
+   };
 
-// Define the export task
-Export.image.toDrive({
-  image: mean,
-  description: 'no2_v1',
-  folder: 'EarthEngineData',
-  fileNamePrefix: 'no2_v1',
-  maxPixels: exportParams.maxPixels,
-  fileFormat: 'GeoTIFF',
-  formatOptions: {
-    cloudOptimized: true
-  }
-});
+  // Define the export task
+  Export.image.toDrive({
+    image: mean,
+    description: 'no2_v1',
+    folder: 'EarthEngineData',
+    fileNamePrefix: 'no2_v1',
+    maxPixels: exportParams.maxPixels,
+    fileFormat: 'GeoTIFF',
+    formatOptions: {
+      cloudOptimized: true
+    }
+  }); ```
 
-```
 This produces an annual average NO2 value for each pixel. The files are then downloaded from Drive.
 
 * Earth engine outputs a range after file prefix, and outputs are split, to combine use gdal_merge.py:
@@ -69,8 +67,8 @@ This produces an annual average NO2 value for each pixel. The files are then dow
 
 * The fossil fuel CO2 emissions data from ODIAC is averaged using the `average_geotif.py` script.
 * To obtain the Copernicus S3p NO2 geotiff files, the following code is executed in Google Earth Engine:
-```
 
+```
 // Define the time range
 var start_date = '2022-01-01';  // The start date
 var end_date = '2022-12-31';  // The end date
