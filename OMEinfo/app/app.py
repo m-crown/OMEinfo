@@ -26,7 +26,7 @@ import dash_loading_spinners as dls
 # the exception.
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/dbc.min.css"] 
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.1.0"
 LOGO_BASE64 = base64.b64encode(open("assets/logos/logo_brand.png", 'rb').read()).decode('ascii')
 OMEINFO_DATA_VERSION = os.environ.get('OMEINFO_VERSION', "2.0.0")
 OMEINFO_URL = os.environ.get('OMEINFO_URL', None)

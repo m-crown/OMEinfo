@@ -123,7 +123,7 @@ def main():
     parser.add_argument("--quiet", type = bool, help = "suppress console output", default = False)
     args = parser.parse_args()
     
-    OMEINFO_CLI_VERSION = "1.0.0"
+    OMEINFO_CLI_VERSION = "1.1.0"
     OMEINFO_CONDA_PREFIX = os.environ.get('CONDA_PREFIX')
     console = Console()
 
