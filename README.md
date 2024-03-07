@@ -1,5 +1,6 @@
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/m-crown/omeinfo)
-![GitHub](https://img.shields.io/github/license/m-crown/omeinfo) 
+![GitHub](https://img.shields.io/github/license/m-crown/omeinfo)
+[![Static Badge](https://img.shields.io/badge/Paper-Bioinformatics%20Advances-blue)](https://doi.org/10.1093/bioadv/vbae025)
 ![Docker Pulls](https://img.shields.io/docker/pulls/mattcrown/omeinfo)
 [![DOI](https://zenodo.org/badge/390303490.svg)](https://zenodo.org/badge/latestdoi/390303490)
 
@@ -9,7 +10,7 @@
 
 OMEinfo is an open-source bioinformatics tool designed to automate the retrieval of consistent geographical metadata for microbiome research. It provides an easy-to-use interface for researchers to obtain geographical metadata, including Köppen-Geiger climate classification, degree of rurality, population density, and fossil fuel CO<sub>2</sub> emissions from user-provided location data. The tool aims to facilitate cross-study comparisons and promote reproducibility in microbiome research by adhering to the principles of FAIR and Open data.
 
-Preprint available now: [OMEinfo: Global Geographic Metadata for -omics Experiments](https://www.biorxiv.org/content/10.1101/2023.10.23.563576v1)
+Publication available now at Bioinformatics Advances: [OMEinfo: Global Geographic Metadata for -omics Experiments](https://doi.org/10.1093/bioadv/vbae025)
 
 See [here](#dash-app-walkthrough-with-test-data) for a walkthrough of using OMEinfo with test data.
 
