@@ -10,7 +10,7 @@
 
 OMEinfo is an open-source bioinformatics tool designed to automate the retrieval of consistent geographical metadata for microbiome research. It provides an easy-to-use interface for researchers to obtain geographical metadata, including Köppen-Geiger climate classification, degree of rurality, population density, and fossil fuel CO<sub>2</sub> emissions from user-provided location data. The tool aims to facilitate cross-study comparisons and promote reproducibility in microbiome research by adhering to the principles of FAIR and Open data.
 
-Publication available now at Bioinformatics Advances: [OMEinfo: Global Geographic Metadata for -omics Experiments](https://doi.org/10.1093/bioadv/vbae025)
+Publication available now at Bioinformatics Advances: [OMEinfo: Global Geographic Metadata for -omics Experiments](https://doi.org/10.1093/bioadv/vbae025) (*Note: Due to issues with the rendering of regex in the article, the current paper regular expression does not reflect the intended regular expressions for latitude and longitude. The correct expressions are:* `Latitude: (^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$)` *and* `Longitude: (^[-+]?((1[0-7]\d(\.\d+)?)|([1-9]?\d(\.\d+)?)|180(\.0+)?)$)`)
 
 See [here](#dash-app-walkthrough-with-test-data) for a walkthrough of using OMEinfo with test data.
 
